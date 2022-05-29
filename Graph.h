@@ -116,7 +116,7 @@ public:
     std::vector<Vertex<T> *> getVertexSet() const;
 
     // Fp06 - single source
-    void dijkstraShortestPath(int s);
+    void dijkstraShortestPath(int s, int dim);
     std::vector<T> getPath(int origin, int dest) const;
     std::vector<int> getEdgePath(const T &origin, const T &dest) const;
 
@@ -192,21 +192,16 @@ template<class T>
 bool myfunction (Vertex<T>* i,Vertex<T>* j) { return (i->getDist() < j->getDist()); }
 
 template<class T>
-void Graph<T>::dijkstraShortestPath(int origin) {
+void Graph<T>::dijkstraShortestPath(int origin, int dim) {
     auto v = findVertex(origin);
     std::vector<Vertex<T> *> vertexSetCopy = vertexSet;
     std::for_each(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * vertex){vertex->dist = INF; vertex->visited = false; vertex->path = NULL; vertex->lastEdge = 0;});
     v->dist = 0;
     std::sort(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * v1, Vertex<T> * v2){return v1->dist < v2->dist;});
     for(int i = 0; i < vertexSet.size(); ++i) {
-        int per1 = i * 100;
-        int per = per1 /vertexSet.size();
-        if (i%1000 == 0) {
-            //std::cout << per << "%" << std::endl;
-        }
         Vertex<T> * nextV = vertexSetCopy.front();
         for (auto edge : nextV->adj){
-            if (!edge.dest->visited) {
+            if (!edge.dest->visited && edge.capacity >= dim) {
                 if(nextV->dist + edge.duration < edge.dest->dist || edge.dest->dist == 0) {
                     edge.dest->dist = nextV->dist + edge.duration;
                     edge.dest->path = nextV;
@@ -226,11 +221,12 @@ std::vector<T> Graph<T>::getPath(int origin, int dest) const {
     std::vector<T> res1;
     auto v = findVertex(dest);
     if (v==NULL) return res;
-    res.push_back(v->info);
+    res.push_back(v->id);
     T destT = dest;
     while (origin != destT) {
         v = v->path;
-        destT = v->info;
+        if(v == NULL) return res1;
+        destT = v->id;
         res.push_back(destT);
     }
     for (int i = res.size()-1; i > -1; i--) {

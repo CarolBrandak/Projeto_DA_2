@@ -29,7 +29,7 @@ class Plataform{
         void initialMenu();
         void ReadDataset(const string& fileName);
         void ReadGraph();
-
+        void MaxGroupDimension();
     };
 
 #endif //PROJETO_DA_2_PLATAFORM_H

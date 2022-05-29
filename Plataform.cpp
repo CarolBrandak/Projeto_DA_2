@@ -25,6 +25,7 @@ void Plataform::initialMenu(){
     cout<< "----------------------------------------------------" <<endl;
     cout << "Choose an option:" << endl;
     cout << "1. Lista de viagens" << endl;
+    cout << "2. Calcular rota de um grupo (maximizar dimensão)" << endl;
     cout << "0. Exit" << endl;
     std::cin>>op;
     while (stateApplication){
@@ -34,6 +35,9 @@ void Plataform::initialMenu(){
                 break;
             case 1 :
                 ReadGraph();
+                break;
+            case 2 :
+                MaxGroupDimension();
                 break;
             default:
                 cout<<"Invalid option, enter again!\n\n";
@@ -54,8 +58,8 @@ void Plataform::ReadDataset(const string& fileName) {
     int numNodes, numTravels;
     file >> numNodes >> numTravels;
 
-    for (int i = 0; i < numNodes; ++i) {
-        this->graph->addVertex(i);
+    for (int i = 0; i <= numNodes; ++i) {
+        this->graph->addVertex(i+1);
     }
     getline(file, line);
     int cnt = 0;
@@ -80,3 +84,42 @@ void Plataform::ReadGraph(){
     }
     initialMenu();
 }
+
+void Plataform::MaxGroupDimension() {
+    int o, d, dim;
+    cout << "Origem:" << endl;
+    std::cin >> o;
+    while (!graph->findVertex(o)){
+        cout << "Essa origem não existe.\n";
+        cout << "Origem:" << endl;
+        std::cin >> o;
+    }
+    cout << "Destino:" << endl;
+    std::cin >> d;
+    while (!graph->findVertex(d)){
+        cout << "Esse destino não existe.\n";
+        cout << "Destino:" << endl;
+        std::cin >> d;
+    }
+    cout << "Dimensão:" << endl;
+    std::cin >> dim;
+    cout << endl;
+
+    graph->dijkstraShortestPath(o, dim);
+
+    vector<int> vec = graph->getPath(o, d);
+    if(vec.size() == 0){
+        cout << "Caminho Inexistente\n";
+    }else {
+        cout << "Rota:" << endl;
+        for (int v = 0; v < vec.size(); v++) {
+            if (v != vec.size() - 1)
+                cout << vec[v] << " --> ";
+            else
+                cout << vec[v];
+        }
+        cout << endl;
+    }
+    initialMenu();
+}
+
