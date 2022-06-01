@@ -128,6 +128,30 @@ Projeto_DA_2/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Projeto_DA_2.dir\build.make CMakeFiles/Projeto_DA_2.dir/build
 .PHONY : Projeto_DA_2/fast
 
+Graph.obj: Graph.cpp.obj
+.PHONY : Graph.obj
+
+# target to build an object file
+Graph.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Projeto_DA_2.dir\build.make CMakeFiles/Projeto_DA_2.dir/Graph.cpp.obj
+.PHONY : Graph.cpp.obj
+
+Graph.i: Graph.cpp.i
+.PHONY : Graph.i
+
+# target to preprocess a source file
+Graph.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Projeto_DA_2.dir\build.make CMakeFiles/Projeto_DA_2.dir/Graph.cpp.i
+.PHONY : Graph.cpp.i
+
+Graph.s: Graph.cpp.s
+.PHONY : Graph.s
+
+# target to generate assembly for a file
+Graph.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Projeto_DA_2.dir\build.make CMakeFiles/Projeto_DA_2.dir/Graph.cpp.s
+.PHONY : Graph.cpp.s
+
 Plataform.obj: Plataform.cpp.obj
 .PHONY : Plataform.obj
 
@@ -185,6 +209,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Projeto_DA_2
+	@echo ... Graph.obj
+	@echo ... Graph.i
+	@echo ... Graph.s
 	@echo ... Plataform.obj
 	@echo ... Plataform.i
 	@echo ... Plataform.s

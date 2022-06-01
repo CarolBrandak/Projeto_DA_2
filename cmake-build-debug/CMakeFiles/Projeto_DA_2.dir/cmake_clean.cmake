@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Projeto_DA_2.dir/Graph.cpp.obj"
   "CMakeFiles/Projeto_DA_2.dir/Plataform.cpp.obj"
   "CMakeFiles/Projeto_DA_2.dir/main.cpp.obj"
   "Projeto_DA_2.exe"

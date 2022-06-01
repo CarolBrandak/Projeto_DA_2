@@ -11,6 +11,7 @@
 #include <limits>
 #include <cmath>
 #include <algorithm>
+#include <map>
 
 
 template <class T> class Edge;
@@ -26,7 +27,7 @@ template <class T>
 class Vertex {
     //T & info;
     int id;
-    std::vector<Edge<T> > adj;		// outgoing edges
+    std::vector<Edge<T>> adj;		// outgoing edges
 
     double dist = 0;
     int trans = 1;
@@ -34,6 +35,8 @@ class Vertex {
     int lastEdge = 0;
 
     bool visited = false;		// auxiliary field
+    int parent = 0;
+    int grau=0;
 
     void addEdge(int id, Vertex<T> *dest, int ca, int du);
 
@@ -122,6 +125,9 @@ public:
     void dijkstraCapTrans(int origin);
     std::vector<T> getPath(int origin, int dest) const;
     std::vector<int> getEdgePath(const T &origin, const T &dest) const;
+
+    std::pair<int,std::vector<int>> bfs(int v, int dest);
+    int fordFulkerson(int s, int t);
 
 };
 
@@ -323,5 +329,109 @@ std::vector <int> Graph<T>::getEdgePath(const T &origin, const T &dest) const {
     return res1;
 }
 
+template<class T>
+std::pair<int, std::vector<int>> Graph<T>::bfs(int v, int dest) {
+    std::map<int,int> distanceToV;
+    std::vector<int> path;
+    distanceToV[v]=0;
+
+    for(int i = 1; i<= vertexSet.size() ; i++){
+        vertexSet[i]->visited=false;
+        vertexSet[i]->parent=-1;
+    }
+
+    vertexSet[v]->parent=v;
+    std::queue<int> q;
+    q.push(v);
+    vertexSet[v]->visited=true;
+
+    while(!q.empty()){
+        int u = q.front();
+        q.pop();
+
+        for(Edge<T> e : vertexSet[u]->adj){
+            int w = e.dest;
+            if(!vertexSet[w]->visited && e.capacity > 0){
+                distanceToV[w]=distanceToV[u]+1;
+                vertexSet[w]->grau += 1;
+                vertexSet[w]->parent = u;
+                q.push(w);
+                vertexSet[w]->visited=true;
+            }
+        }
+
+    }
+    if(distanceToV.find(dest) != distanceToV.end()){
+        int pred = dest;
+        path.push_back(dest);
+        while(pred != v){
+            pred= vertexSet[pred]->parent;
+            path.insert(path.begin(),pred);
+        }
+
+        return{ distanceToV[dest], path};
+    }
+
+    return {-1,{}};
+}
+
+template <class T>
+int Graph<T>::fordFulkerson(int s, int t) {
+    std::pair<int, std::vector<int>> res;
+    int max_flow = 0;
+    int status = 0;
+
+    while(status != -1){
+        res= bfs(s,t);
+
+        if((status = res.first) != -1) break;
+
+        else{
+            int path_flow = INT_MAX;
+            for(int i = 0; i<res.second.size()-1 ;i++){
+                int src = res.second[i];
+                int dest = res.second[i+1];
+                int srcdest_flow = 0;
+                for(Edge<T> e: vertexSet[src]->adj){
+                    if(e.dest == dest && e.capacity > srcdest_flow){
+                        srcdest_flow = e.capacity;
+                    }
+                }
+                if(srcdest_flow < path_flow) path_flow = srcdest_flow;
+            }
+
+            for(int i = 0; i<res.second.size()-1 ;i++) {
+                int src = res.second[i];
+                int dest = res.second[i + 1];
+
+                int numrep = 0;
+                for (int i = 0; i < vertexSet[src]->adj; i++) {
+                    if (vertexSet[src].adj[i].dest == dest) {
+                        numrep++;
+                        if (vertexSet[src].adj[i].capacity >= path_flow) {
+                            vertexSet[src].adj[i].capacity -= path_flow;
+                        }
+                    } else {
+                        continue;
+                    }
+                    int numreturn = 0;
+                    for (int j = 0; j < vertexSet[dest]->adj.size(); j++)
+                    {
+                        if (vertexSet[dest].adj[j].dest == src) {
+                            numreturn++;
+                            if (numrep == numreturn) {
+                                vertexSet[dest].adj[j].capacity += path_flow;
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            max_flow += path_flow;
+        }
+    }
+    return max_flow;
+}
 
 #endif //PROJETO_DA_2_GRAPH_H
