@@ -12,7 +12,7 @@ void Plataform::FileMenu(){
     cout << "Qual ficheiro quer ler: (1-10)"<< endl;
     int fich;
     std::cin >> fich;
-    while (fich <= 0 || fich > 10){
+    while (fich < 0 || fich > 10){
         cout << "Erro! Qual ficheiro quer ler: (1-10)"<< endl;
         std::cin >> fich;
     }
@@ -58,7 +58,7 @@ void Plataform::ReadDataset(const string& fileName) {
     int numNodes, numTravels;
     file >> numNodes >> numTravels;
 
-    for (int i = 0; i <= numNodes; ++i) {
+    for (int i = 0; i < numNodes; ++i) {
         this->graph->addVertex(i+1);
     }
     getline(file, line);
@@ -101,11 +101,9 @@ void Plataform::MaxGroupDimension() {
         cout << "Destino:" << endl;
         std::cin >> d;
     }
-    cout << "Dimensão:" << endl;
-    std::cin >> dim;
     cout << endl;
 
-    graph->dijkstraShortestPath(o, dim);
+    graph->dijkstraMaxCapacity(o);
 
     vector<int> vec = graph->getPath(o, d);
     if(vec.size() == 0){

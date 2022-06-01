@@ -117,6 +117,7 @@ public:
 
     // Fp06 - single source
     void dijkstraShortestPath(int s, int dim);
+    void dijkstraMaxCapacity(int origin);
     std::vector<T> getPath(int origin, int dest) const;
     std::vector<int> getEdgePath(const T &origin, const T &dest) const;
 
@@ -212,6 +213,30 @@ void Graph<T>::dijkstraShortestPath(int origin, int dim) {
         nextV->visited = true;
         vertexSetCopy.erase(vertexSetCopy.begin());
         std::sort(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * vertex1, Vertex<T> * vertex2){return vertex1->dist < vertex2->dist;});
+    }
+}
+
+template<class T>
+void Graph<T>::dijkstraMaxCapacity(int origin) {
+    auto v = findVertex(origin);
+    std::vector<Vertex<T> *> vertexSetCopy = vertexSet;
+    std::for_each(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * vertex){vertex->dist = 0; vertex->visited = false; vertex->path = NULL; vertex->lastEdge = 0;});
+    v->dist = 1;
+    std::sort(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * v1, Vertex<T> * v2){return v1->dist > v2->dist;});
+    for(int i = 0; i < vertexSet.size(); ++i) {
+        Vertex<T> * nextV = vertexSetCopy.front();
+        for (auto edge : nextV->adj){
+            if (!edge.dest->visited) {
+                if(nextV->dist + edge.capacity > edge.dest->dist || edge.dest->dist == INF) {
+                    edge.dest->dist = nextV->dist + edge.capacity;
+                    edge.dest->path = nextV;
+                    edge.dest->lastEdge = edge.id;
+                }
+            }
+        }
+        nextV->visited = true;
+        vertexSetCopy.erase(vertexSetCopy.begin());
+        std::sort(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * vertex1, Vertex<T> * vertex2){return vertex1->dist > vertex2->dist;});
     }
 }
 
