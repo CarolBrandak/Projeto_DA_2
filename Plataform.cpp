@@ -25,7 +25,7 @@ void Plataform::initialMenu(){
     cout<< "----------------------------------------------------" <<endl;
     cout << "Choose an option:" << endl;
     cout << "1. Lista de viagens" << endl;
-    cout << "2. Calcular rota de um grupo (maximizar dimensão)" << endl;
+    cout << "2. Calcular rota de grupos que nao se separam" << endl;
     cout << "0. Exit" << endl;
     std::cin>>op;
     while (stateApplication){
@@ -37,13 +37,36 @@ void Plataform::initialMenu(){
                 ReadGraph();
                 break;
             case 2 :
-                MaxGroupDimension();
+                MenuRota();
                 break;
             default:
                 cout<<"Invalid option, enter again!\n\n";
                 initialMenu();
                 break;
         }
+    }
+}
+
+void Plataform::MenuRota() {
+    int op;
+    cout << "1. Maximizar a dimensao" << endl;
+    cout << "2. Maximizar a dimensao e minimizar o numero de transbordos"<<endl;
+    cout << "3. Voltar ao menu anterior" << endl;
+    std::cin >> op;
+    switch (op) {
+        case 1:
+            MaxGroupDimension();
+            break;
+        case 2:
+            MaxDimMinTrans();
+            break;
+        case 3:
+            initialMenu();
+            break;
+        default:
+            cout << "Invalid option, enter again!\n\n";
+            MenuRota();
+            break;
     }
 }
 
@@ -70,7 +93,6 @@ void Plataform::ReadDataset(const string& fileName) {
         this->graph->addEdge(cnt, o, d, ca, du);
         getline(file, line);
     }
-
 }
 
 void Plataform::ReadGraph(){
@@ -86,19 +108,19 @@ void Plataform::ReadGraph(){
 }
 
 void Plataform::MaxGroupDimension() {
-    int o, d, dim;
-    cout << "Origem:" << endl;
+    int o, d;
+    cout << "Origin:" << endl;
     std::cin >> o;
     while (!graph->findVertex(o)){
-        cout << "Essa origem não existe.\n";
-        cout << "Origem:" << endl;
+        cout << "Essa origem nao existe.\n";
+        cout << "Origin:" << endl;
         std::cin >> o;
     }
-    cout << "Destino:" << endl;
+    cout << "Destination:" << endl;
     std::cin >> d;
     while (!graph->findVertex(d)){
-        cout << "Esse destino não existe.\n";
-        cout << "Destino:" << endl;
+        cout << "Esse destino nao existe.\n";
+        cout << "Destination:" << endl;
         std::cin >> d;
     }
     cout << endl;
@@ -118,6 +140,43 @@ void Plataform::MaxGroupDimension() {
         }
         cout << endl;
     }
-    initialMenu();
+    MenuRota();
 }
+
+void Plataform::MaxDimMinTrans() {
+    int o, d, dim;
+    cout << "Origin:" << endl;
+    std::cin >> o;
+    while (!graph->findVertex(o)){
+        cout << "Essa origem nao existe.\n";
+        cout << "Origin:" << endl;
+        std::cin >> o;
+    }
+    cout << "Destination:" << endl;
+    std::cin >> d;
+    while (!graph->findVertex(d)){
+        cout << "Esse destino nao existe.\n";
+        cout << "Destination:" << endl;
+        std::cin >> d;
+    }
+
+    graph->dijkstraCapTrans(o);
+
+    vector<int> vec = graph->getPath(o, d);
+    if(vec.size() == 0){
+        cout << "Caminho Inexistente\n";
+    }else {
+        cout << "Rota:" << endl;
+        for (int v = 0; v < vec.size(); v++) {
+            if (v != vec.size() - 1)
+                cout << vec[v] << " --> ";
+            else
+                cout << vec[v];
+        }
+        cout << endl;
+    }
+
+    MenuRota();
+}
+
 

@@ -29,6 +29,7 @@ class Vertex {
     std::vector<Edge<T> > adj;		// outgoing edges
 
     double dist = 0;
+    int trans = 1;
     Vertex<T> *path = NULL;
     int lastEdge = 0;
 
@@ -118,6 +119,7 @@ public:
     // Fp06 - single source
     void dijkstraShortestPath(int s, int dim);
     void dijkstraMaxCapacity(int origin);
+    void dijkstraCapTrans(int origin);
     std::vector<T> getPath(int origin, int dest) const;
     std::vector<int> getEdgePath(const T &origin, const T &dest) const;
 
@@ -196,7 +198,12 @@ template<class T>
 void Graph<T>::dijkstraShortestPath(int origin, int dim) {
     auto v = findVertex(origin);
     std::vector<Vertex<T> *> vertexSetCopy = vertexSet;
-    std::for_each(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * vertex){vertex->dist = INF; vertex->visited = false; vertex->path = NULL; vertex->lastEdge = 0;});
+    for (auto vertex: vertexSetCopy){
+        vertex->dist = INF;
+        vertex->visited = false;
+        vertex->path = NULL;
+        vertex->lastEdge = 0;
+    }
     v->dist = 0;
     std::sort(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * v1, Vertex<T> * v2){return v1->dist < v2->dist;});
     for(int i = 0; i < vertexSet.size(); ++i) {
@@ -216,11 +223,17 @@ void Graph<T>::dijkstraShortestPath(int origin, int dim) {
     }
 }
 
+//A cada aresta adjacente escolhe a que tem maior capacidade
 template<class T>
 void Graph<T>::dijkstraMaxCapacity(int origin) {
     auto v = findVertex(origin);
     std::vector<Vertex<T> *> vertexSetCopy = vertexSet;
-    std::for_each(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * vertex){vertex->dist = 0; vertex->visited = false; vertex->path = NULL; vertex->lastEdge = 0;});
+    for (auto vertex: vertexSetCopy){
+        vertex->dist = 0;
+        vertex->visited = false;
+        vertex->path = NULL;
+        vertex->lastEdge = 0;
+    }
     v->dist = 1;
     std::sort(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * v1, Vertex<T> * v2){return v1->dist > v2->dist;});
     for(int i = 0; i < vertexSet.size(); ++i) {
@@ -230,6 +243,37 @@ void Graph<T>::dijkstraMaxCapacity(int origin) {
                 if(nextV->dist + edge.capacity > edge.dest->dist || edge.dest->dist == INF) {
                     edge.dest->dist = nextV->dist + edge.capacity;
                     edge.dest->path = nextV;
+                    edge.dest->lastEdge = edge.id;
+                }
+            }
+        }
+        nextV->visited = true;
+        vertexSetCopy.erase(vertexSetCopy.begin());
+        std::sort(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * vertex1, Vertex<T> * vertex2){return vertex1->dist > vertex2->dist;});
+    }
+}
+
+//A cada aresta adjacente escolhe a que tem maior capacidade juntamente com o menor numero de transbordos ate esse instante
+template<class T>
+void Graph<T>::dijkstraCapTrans(int origin) {
+    auto v = findVertex(origin);
+    std::vector<Vertex<T> *> vertexSetCopy = vertexSet;
+    for (auto vertex: vertexSetCopy){
+        vertex->dist = 0;
+        vertex->visited = false;
+        vertex->path = NULL;
+        vertex->lastEdge = 0;
+    }
+    v->dist = 1;
+    std::sort(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * v1, Vertex<T> * v2){return v1->dist > v2->dist;});
+    for(int i = 0; i < vertexSet.size(); ++i) {
+        Vertex<T> * nextV = vertexSetCopy.front();
+        for (auto edge : nextV->adj){
+            if (!edge.dest->visited) {
+                if(nextV->dist + (edge.capacity/nextV->trans) > edge.dest->dist) {
+                    edge.dest->dist = nextV->dist + (edge.capacity/nextV->trans);
+                    edge.dest->path = nextV;
+                    edge.dest->trans = nextV->trans + 1;
                     edge.dest->lastEdge = edge.id;
                 }
             }

@@ -27,9 +27,11 @@ class Plataform{
         Plataform();
         void FileMenu();
         void initialMenu();
+        void MenuRota();
         void ReadDataset(const string& fileName);
         void ReadGraph();
         void MaxGroupDimension();
+        void MaxDimMinTrans();
     };
 
 #endif //PROJETO_DA_2_PLATAFORM_H
