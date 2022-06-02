@@ -12,6 +12,7 @@
 #include <cmath>
 #include <algorithm>
 #include <map>
+#include <iostream>
 
 
 template <class T> class Edge;
@@ -291,11 +292,11 @@ std::pair<int, std::vector<int>> Graph<T>::bfs(int v, int dest) {
     std::vector<int> path;
     distanceToV[v]=0;
 
-    for(int i = 1; i<= vertexSet.size() ; i++){
+
+    for(int i = 0; i< vertexSet.size()  ; i++){
         vertexSet[i]->visited=false;
         vertexSet[i]->parent=-1;
     }
-
     vertexSet[v]->parent=v;
     std::queue<int> q;
     q.push(v);
@@ -304,9 +305,8 @@ std::pair<int, std::vector<int>> Graph<T>::bfs(int v, int dest) {
     while(!q.empty()){
         int u = q.front();
         q.pop();
-
         for(Edge<T> e : vertexSet[u]->adj){
-            int w = e.dest;
+            int w = e.getDestId()-1;
             if(!vertexSet[w]->visited && e.capacity > 0){
                 distanceToV[w]=distanceToV[u]+1;
                 vertexSet[w]->grau += 1;
@@ -315,7 +315,6 @@ std::pair<int, std::vector<int>> Graph<T>::bfs(int v, int dest) {
                 vertexSet[w]->visited=true;
             }
         }
-
     }
     if(distanceToV.find(dest) != distanceToV.end()){
         int pred = dest;
@@ -324,7 +323,6 @@ std::pair<int, std::vector<int>> Graph<T>::bfs(int v, int dest) {
             pred= vertexSet[pred]->parent;
             path.insert(path.begin(),pred);
         }
-
         return{ distanceToV[dest], path};
     }
 
@@ -349,7 +347,7 @@ int Graph<T>::fordFulkerson(int s, int t) {
                 int dest = res.second[i+1];
                 int srcdest_flow = 0;
                 for(Edge<T> e: vertexSet[src]->adj){
-                    if(e.dest == dest && e.capacity > srcdest_flow){
+                    if(e.getDestId() == dest && e.capacity > srcdest_flow){
                         srcdest_flow = e.capacity;
                     }
                 }
@@ -361,11 +359,11 @@ int Graph<T>::fordFulkerson(int s, int t) {
                 int dest = res.second[i + 1];
 
                 int numrep = 0;
-                for (int i = 0; i < vertexSet[src]->adj; i++) {
-                    if (vertexSet[src].adj[i].dest == dest) {
+                for (int i = 0; i < vertexSet[src]->adj.size(); i++) {
+                    if (vertexSet[src]->adj[i].getDestId() == dest) {
                         numrep++;
-                        if (vertexSet[src].adj[i].capacity >= path_flow) {
-                            vertexSet[src].adj[i].capacity -= path_flow;
+                        if (vertexSet[src]->adj[i].capacity >= path_flow) {
+                            vertexSet[src]->adj[i].capacity -= path_flow;
                         }
                     } else {
                         continue;
@@ -373,10 +371,10 @@ int Graph<T>::fordFulkerson(int s, int t) {
                     int numreturn = 0;
                     for (int j = 0; j < vertexSet[dest]->adj.size(); j++)
                     {
-                        if (vertexSet[dest].adj[j].dest == src) {
+                        if (vertexSet[dest]->adj[j].getDestId() == src) {
                             numreturn++;
                             if (numrep == numreturn) {
-                                vertexSet[dest].adj[j].capacity += path_flow;
+                                vertexSet[dest]->adj[j].capacity += path_flow;
                                 break;
                             }
                         }
@@ -385,8 +383,10 @@ int Graph<T>::fordFulkerson(int s, int t) {
                 }
             }
             max_flow += path_flow;
+            std::cout << max_flow<< std::endl;
         }
     }
+
     return max_flow;
 }
 

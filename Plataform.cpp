@@ -26,6 +26,7 @@ void Plataform::initialMenu(){
     cout << "Choose an option:" << endl;
     cout << "1. Lista de viagens" << endl;
     cout << "2. Calcular rota de um grupo (maximizar dimensão)" << endl;
+    cout << "3..." << endl;
     cout << "0. Exit" << endl;
     std::cin>>op;
     while (stateApplication){
@@ -38,6 +39,10 @@ void Plataform::initialMenu(){
                 break;
             case 2 :
                 MaxGroupDimension();
+                break;
+            case 3:
+                this->rgraph = graph;
+                rgraph->fordFulkerson(1,4);
                 break;
             default:
                 cout<<"Invalid option, enter again!\n\n";
