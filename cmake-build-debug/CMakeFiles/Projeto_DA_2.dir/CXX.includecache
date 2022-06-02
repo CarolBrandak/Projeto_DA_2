@@ -1,0 +1,50 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Graph.h
+iostream
+-
+ostream
+-
+vector
+-
+queue
+-
+list
+-
+limits
+-
+cmath
+-
+algorithm
+-
+map
+-
+
+C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Plataform.cpp
+Plataform.h
+C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Plataform.h
+
+C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Plataform.h
+Graph.h
+C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Graph.h
+iostream
+-
+string
+-
+vector
+-
+fstream
+-
+algorithm
+-
+
+C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/main.cpp
+Plataform.h
+C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Plataform.h
+

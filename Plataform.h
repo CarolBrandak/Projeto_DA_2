@@ -22,6 +22,7 @@ using std::ifstream;
 
 class Plataform{
     Graph<int>* graph;
+    Graph<int>* rgraph;
     bool stateApplication=true;
     public:
         Plataform();
