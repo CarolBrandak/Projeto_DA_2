@@ -124,9 +124,6 @@ public:
 
         while(status != -1){
             res= bfs (s,t);
-            for(auto x: res.second){
-                cout<<x<<"->";
-            }
             cout<<endl;
             if((status = res.first) == -1){
                 break;
@@ -174,6 +171,11 @@ public:
                     }
                 }
                 max_flow += path_flow;
+                cout<<"Encaminhamento:";
+                for(auto e: res.second){
+                    cout<<e<<"->";
+                }
+                cout<<"Path Flow:"<<path_flow<<endl;
             }
         }
        return max_flow;
