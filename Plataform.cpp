@@ -26,7 +26,7 @@ void Plataform::initialMenu(){
     cout<< "----------------------------------------------------" <<endl;
     cout << "Choose an option:" << endl;
     cout << "1. Lista de viagens" << endl;
-    cout << "2. Calcular rota de grupos que nao se separam" << endl;
+    cout << "2. Cenario 1" << endl;
     cout << "3. Case 2.3" << endl;
     cout << "0. Exit" << endl;
     std::cin>>op;
@@ -55,8 +55,8 @@ void Plataform::initialMenu(){
 
 void Plataform::MenuRota() {
     int op;
-    cout << "1. Maximizar a dimensao" << endl;
-    cout << "2. Maximizar a dimensao e minimizar o numero de transbordos"<<endl;
+    cout << "1. Case 1.1" << endl;
+    cout << "2. Case 1.2"<<endl;
     cout << "3. Voltar ao menu anterior" << endl;
     std::cin >> op;
     switch (op) {
