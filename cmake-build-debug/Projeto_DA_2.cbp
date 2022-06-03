@@ -80,16 +80,22 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/luispaiva/CLionProjects/Projeto_DA_2/Graph.cpp">
+		<Unit filename="/Users/luispaiva/CLionProjects/Projeto_DA_2/Graph.h">
 			<Option target="Projeto_DA_2"/>
 		</Unit>
-		<Unit filename="/Users/luispaiva/CLionProjects/Projeto_DA_2/Graph.h">
+		<Unit filename="/Users/luispaiva/CLionProjects/Projeto_DA_2/MaxHeap.h">
+			<Option target="Projeto_DA_2"/>
+		</Unit>
+		<Unit filename="/Users/luispaiva/CLionProjects/Projeto_DA_2/MinHeap.h">
 			<Option target="Projeto_DA_2"/>
 		</Unit>
 		<Unit filename="/Users/luispaiva/CLionProjects/Projeto_DA_2/Plataform.cpp">
 			<Option target="Projeto_DA_2"/>
 		</Unit>
 		<Unit filename="/Users/luispaiva/CLionProjects/Projeto_DA_2/Plataform.h">
+			<Option target="Projeto_DA_2"/>
+		</Unit>
+		<Unit filename="/Users/luispaiva/CLionProjects/Projeto_DA_2/fulkersongraph.h">
 			<Option target="Projeto_DA_2"/>
 		</Unit>
 		<Unit filename="/Users/luispaiva/CLionProjects/Projeto_DA_2/main.cpp">

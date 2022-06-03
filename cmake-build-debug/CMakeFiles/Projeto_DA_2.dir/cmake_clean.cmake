@@ -1,6 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Projeto_DA_2.dir/Graph.cpp.o"
-  "CMakeFiles/Projeto_DA_2.dir/Graph.cpp.o.d"
   "CMakeFiles/Projeto_DA_2.dir/Plataform.cpp.o"
   "CMakeFiles/Projeto_DA_2.dir/Plataform.cpp.o.d"
   "CMakeFiles/Projeto_DA_2.dir/main.cpp.o"

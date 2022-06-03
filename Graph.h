@@ -38,7 +38,7 @@ class Vertex {
     int parent = 0;
     int grau=0;
 
-    void addEdge(int id, Vertex<T> *dest, int ca, int du);
+    void addEdge(int id,Vertex<T> *sourc, Vertex<T> *dest, int ca, int du);
 
 public:
     Vertex(int id);
@@ -60,8 +60,8 @@ Vertex<T>::Vertex(int id): id(id){}
  * with a given destination vertex (d) and edge weight (w).
  */
 template <class T>
-void Vertex<T>::addEdge(int id, Vertex<T> *d, int ca, int du) {
-    adj.push_back(Edge<T>(id, d, ca, du));
+void Vertex<T>::addEdge(int id,Vertex<T> *s, Vertex<T> *d, int ca, int du) {
+    adj.push_back(Edge<T>(id,s, d, ca, du));
 }
 
 template <class T>
@@ -88,21 +88,23 @@ int Vertex<T>::getId() const{
 template <class T>
 class Edge {
     int id;
+    Vertex<T> *sourc;
     Vertex<T> * dest;      // destination vertex
     int duration;       // edge duration
     int capacity;
 public:
-    Edge(int id, Vertex<T> *d, int ca, int du);
+    Edge(int id,Vertex<T> *s, Vertex<T> *d, int ca, int du);
     friend class Graph<T>;
     friend class Vertex<T>;
     int getId() const {return id;}
     int getDestId() const {return dest->getId();}
     int getDuration() const {return duration;}
     int getCapacity() const {return capacity;}
+    int getSourcId() const {return sourc->getId();}
 };
 
 template <class T>
-Edge<T>::Edge(int id, Vertex<T> *d, int ca, int du): id(id), dest(d), capacity(ca), duration(du) {}
+Edge<T>::Edge(int id,Vertex<T> *s, Vertex<T> *d, int ca, int du): id(id), dest(d), capacity(ca), duration(du) {}
 
 
 /*************************** Graph  **************************/
@@ -110,7 +112,6 @@ Edge<T>::Edge(int id, Vertex<T> *d, int ca, int du): id(id), dest(d), capacity(c
 template <class T>
 class Graph {
     std::vector<Vertex<T> *> vertexSet;    // vertex set
-
 public:
     //Vertex<T> *findVertex(const T &in) const;
     Vertex<T> *findVertex(int id) const;
@@ -125,7 +126,7 @@ public:
     std::vector<T> getPath(int origin, int dest) const;
     std::vector<int> getEdgePath(const T &origin, const T &dest) const;
 
-    std::pair<int,std::vector<int>> bfs(int v, int dest);
+    std::vector<int> bfs(int v, int dest);
     int fordFulkerson(int s, int t);
 
 };
@@ -188,7 +189,7 @@ bool Graph<T>::addEdge(int id, const int sourc, const int dest, int ca, int du) 
     auto v2 = findVertex(dest);
     if (v1 == NULL || v2 == NULL)
         return false;
-    v1->addEdge(id, v2, ca, du);
+    v1->addEdge(id,v1, v2, ca, du);
     return true;
 }
 
@@ -286,108 +287,6 @@ std::vector <int> Graph<T>::getEdgePath(const T &origin, const T &dest) const {
     return res1;
 }
 
-template<class T>
-std::pair<int, std::vector<int>> Graph<T>::bfs(int v, int dest) {
-    std::map<int,int> distanceToV;
-    std::vector<int> path;
-    distanceToV[v]=0;
 
-
-    for(int i = 0; i< vertexSet.size()  ; i++){
-        vertexSet[i]->visited=false;
-        vertexSet[i]->parent=-1;
-    }
-    vertexSet[v]->parent=v;
-    std::queue<int> q;
-    q.push(v);
-    vertexSet[v]->visited=true;
-
-    while(!q.empty()){
-        int u = q.front();
-        q.pop();
-        for(Edge<T> e : vertexSet[u]->adj){
-            int w = e.getDestId()-1;
-            if(!vertexSet[w]->visited && e.capacity > 0){
-                distanceToV[w]=distanceToV[u]+1;
-                vertexSet[w]->grau += 1;
-                vertexSet[w]->parent = u;
-                q.push(w);
-                vertexSet[w]->visited=true;
-            }
-        }
-    }
-    if(distanceToV.find(dest) != distanceToV.end()){
-        int pred = dest;
-        path.push_back(dest);
-        while(pred != v){
-            pred= vertexSet[pred]->parent;
-            path.insert(path.begin(),pred);
-        }
-        return{ distanceToV[dest], path};
-    }
-
-    return {-1,{}};
-}
-
-template <class T>
-int Graph<T>::fordFulkerson(int s, int t) {
-    std::pair<int, std::vector<int>> res;
-    int max_flow = 0;
-    int status = 0;
-
-    while(status != -1){
-        res= bfs(s,t);
-
-        if((status = res.first) != -1) break;
-
-        else{
-            int path_flow = INT_MAX;
-            for(int i = 0; i<res.second.size()-1 ;i++){
-                int src = res.second[i];
-                int dest = res.second[i+1];
-                int srcdest_flow = 0;
-                for(Edge<T> e: vertexSet[src]->adj){
-                    if(e.getDestId() == dest && e.capacity > srcdest_flow){
-                        srcdest_flow = e.capacity;
-                    }
-                }
-                if(srcdest_flow < path_flow) path_flow = srcdest_flow;
-            }
-
-            for(int i = 0; i<res.second.size()-1 ;i++) {
-                int src = res.second[i];
-                int dest = res.second[i + 1];
-
-                int numrep = 0;
-                for (int i = 0; i < vertexSet[src]->adj.size(); i++) {
-                    if (vertexSet[src]->adj[i].getDestId() == dest) {
-                        numrep++;
-                        if (vertexSet[src]->adj[i].capacity >= path_flow) {
-                            vertexSet[src]->adj[i].capacity -= path_flow;
-                        }
-                    } else {
-                        continue;
-                    }
-                    int numreturn = 0;
-                    for (int j = 0; j < vertexSet[dest]->adj.size(); j++)
-                    {
-                        if (vertexSet[dest]->adj[j].getDestId() == src) {
-                            numreturn++;
-                            if (numrep == numreturn) {
-                                vertexSet[dest]->adj[j].capacity += path_flow;
-                                break;
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-            max_flow += path_flow;
-            std::cout << max_flow<< std::endl;
-        }
-    }
-
-    return max_flow;
-}
 
 #endif //PROJETO_DA_2_GRAPH_H
