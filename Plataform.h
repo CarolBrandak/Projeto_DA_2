@@ -24,6 +24,7 @@ class Plataform{
     Graph<int>* graph;
     Graph<int>* rgraph;
     bool stateApplication=true;
+    int fich;
     public:
         Plataform();
         void FileMenu();
@@ -32,6 +33,8 @@ class Plataform{
         void ReadDataset(const string& fileName);
         void ReadGraph();
         void MaxGroupDimension();
+        void Case_2_3();
+        void case_2_1();
         void MaxDimMinTrans();
     };
 

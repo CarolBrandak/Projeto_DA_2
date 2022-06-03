@@ -83,10 +83,19 @@
 		<Unit filename="C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Graph.h">
 			<Option target="Projeto_DA_2"/>
 		</Unit>
+		<Unit filename="C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/MaxHeap.h">
+			<Option target="Projeto_DA_2"/>
+		</Unit>
+		<Unit filename="C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/MinHeap.h">
+			<Option target="Projeto_DA_2"/>
+		</Unit>
 		<Unit filename="C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Plataform.cpp">
 			<Option target="Projeto_DA_2"/>
 		</Unit>
 		<Unit filename="C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Plataform.h">
+			<Option target="Projeto_DA_2"/>
+		</Unit>
+		<Unit filename="C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/fulkersongraph.h">
 			<Option target="Projeto_DA_2"/>
 		</Unit>
 		<Unit filename="C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/main.cpp">

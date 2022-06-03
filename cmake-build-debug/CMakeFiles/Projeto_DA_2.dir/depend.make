@@ -4,7 +4,8 @@
 CMakeFiles/Projeto_DA_2.dir/Plataform.cpp.obj: \
  ../Graph.h \
  ../Plataform.cpp \
- ../Plataform.h
+ ../Plataform.h \
+ ../fulkersongraph.h
 CMakeFiles/Projeto_DA_2.dir/main.cpp.obj: \
  ../Graph.h \
  ../Plataform.h \

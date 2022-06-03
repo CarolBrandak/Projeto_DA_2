@@ -29,6 +29,8 @@ map
 C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Plataform.cpp
 Plataform.h
 C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Plataform.h
+fulkersongraph.h
+C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/fulkersongraph.h
 
 C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/Plataform.h
 Graph.h
@@ -43,6 +45,22 @@ fstream
 -
 algorithm
 -
+
+C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/fulkersongraph.h
+iostream
+-
+list
+-
+stack
+-
+fstream
+-
+MaxHeap.h
+C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/MaxHeap.h
+queue
+-
+MinHeap.h
+C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/MinHeap.h
 
 C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/main.cpp
 Plataform.h

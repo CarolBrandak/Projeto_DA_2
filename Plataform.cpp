@@ -3,6 +3,7 @@
 //
 
 #include "Plataform.h"
+#include "fulkersongraph.h"
 
 Plataform::Plataform() {
     this->graph = new Graph<int>;
@@ -26,7 +27,7 @@ void Plataform::initialMenu(){
     cout << "Choose an option:" << endl;
     cout << "1. Lista de viagens" << endl;
     cout << "2. Calcular rota de grupos que nao se separam" << endl;
-    cout << "3..." << endl;
+    cout << "3. Case 2.3" << endl;
     cout << "0. Exit" << endl;
     std::cin>>op;
     while (stateApplication){
@@ -41,8 +42,8 @@ void Plataform::initialMenu(){
                 MenuRota();
                 break;
             case 3:
-                this->rgraph = graph;
-                rgraph->fordFulkerson(1,4);
+                Case_2_3();
+                initialMenu();
                 break;
             default:
                 cout<<"Invalid option, enter again!\n\n";
@@ -148,6 +149,37 @@ void Plataform::MaxGroupDimension() {
     MenuRota();
 }
 
+void Plataform::Case_2_3() {
+    string file;
+    int o,d;
+
+    if(fich==10)
+        file =("../Tests/in"+ std::to_string(fich) +".txt");
+    else
+        file = ("../Tests/in0"+ std::to_string(fich) +".txt");
+
+    cout << "Origem:" << endl;
+    std::cin >> o;
+    while (!graph->findVertex(o)){
+        cout << "Essa origem não existe.\n";
+        cout << "Origem:" << endl;
+        std::cin >> o;
+    }
+
+    cout << "Destino:" << endl;
+    std::cin >> d;
+    while (!graph->findVertex(d)){
+        cout << "Esse destino não existe.\n";
+        cout << "Destino:" << endl;
+        std::cin >> d;
+    }
+    cout << endl;
+
+    FulkersonGraph graph = FulkersonGraph(file);
+    int aux = graph.fordFulkerson(o,d);
+    cout<<"Maximo flow:"<<aux<<endl;
+}
+
 void Plataform::MaxDimMinTrans() {
     int o, d, dim;
     cout << "Origin:" << endl;
@@ -182,6 +214,17 @@ void Plataform::MaxDimMinTrans() {
     }
 
     MenuRota();
+}
+
+void Plataform::case_2_1() {
+    string file;
+    if(fich==10)
+        file =("../Tests/in"+ std::to_string(fich) +".txt");
+    else
+        file = ("../Tests/in0"+ std::to_string(fich) +".txt");
+
+    FulkersonGraph graph = FulkersonGraph(file);
+
 }
 
 
