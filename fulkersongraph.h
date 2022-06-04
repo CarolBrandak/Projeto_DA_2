@@ -118,13 +118,14 @@ public:
         return{-1,{}};
     }
 
-    int fordFulkerson(int s, int t) {
+    pair<vector<int>,vector<vector<int>>> fordFulkerson(int s, int t) {
         pair<int,vector<int>> res;
+        vector<vector<int>> paths;
+        vector<int> path_flows;
         int max_flow=0, status=0;
 
         while(status != -1){
             res= bfs (s,t);
-            cout<<endl;
             if((status = res.first) == -1){
                 break;
             }
@@ -158,10 +159,10 @@ public:
                             }
                             int numreturn = 0;
                             for (int j = 0; j < nodes[dest].adj.size(); j++) {
-                                if (nodes[dest].adj[j]->dest == src) {
+                                if (nodes[dest].residual[j]->dest == src) {
                                     numreturn++;
                                     if (numrep == numreturn) {
-                                        nodes[dest].adj[j]->capacity += path_flow;
+                                        nodes[dest].residual[j]->capacity += path_flow;
                                         break;
                                     }
                                 }
@@ -171,14 +172,75 @@ public:
                     }
                 }
                 max_flow += path_flow;
-                cout<<"Encaminhamento:";
-                for(auto e: res.second){
-                    cout<<e<<"->";
-                }
-                cout<<"Path Flow:"<<path_flow<<endl;
+                path_flows.push_back(path_flow);
+                paths.push_back(res.second);
             }
         }
-       return max_flow;
+       return {path_flows,paths};
+    }
+
+    pair<vector<int>,vector<vector<int>>> fordFulkerson2_1(int s, int t, int capacity) {
+        pair<int,vector<int>> res;
+        vector<vector<int>> paths;
+        vector<int> path_flows;
+        int max_flow=0, status=0;
+
+        while(capacity > 0 && status !=-1){
+            res= bfs (s,t);
+            if((status = res.first) == -1){
+                break;
+            }
+            else{
+                int path_flow = INT_MAX;
+                for(int i = 0; i< res.second.size() -1 ; i++){
+                    int src = res.second[i];
+                    int dest = res.second[i+1];
+                    int srcdest_flow=0;
+                    for(auto e: nodes[src].adj){
+                        if(e->dest == dest && e->capacity > srcdest_flow){
+                            srcdest_flow = e->capacity;
+                        }
+                    }
+                    if(srcdest_flow < path_flow)
+                        path_flow = srcdest_flow;
+                }
+                for(int i = 0; i<res.second.size()-1;i++){
+                    int src = res.second[i];
+                    int dest = res.second[i+1];
+
+                    int numrep = 0;
+                    for(int i = 0; i<nodes[src].adj.size();i++){
+
+                        if(nodes[src].adj[i]->dest == dest) {
+                            numrep++;
+                            if (nodes[src].adj[i]->capacity >= path_flow) {
+                                nodes[src].adj[i]->capacity -= path_flow;
+                            } else {
+                                continue;
+                            }
+                            int numreturn = 0;
+                            for (int j = 0; j < nodes[dest].adj.size(); j++) {
+                                if (nodes[dest].residual[j]->dest == src) {
+                                    numreturn++;
+                                    if (numrep == numreturn) {
+                                        nodes[dest].residual[j]->capacity += path_flow;
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+                capacity -= path_flow;
+                if(capacity < 0 ){
+                    path_flows.push_back(1);
+                }
+                path_flows.push_back(path_flow);
+                paths.push_back(res.second);
+            }
+        }
+        return {path_flows,paths};
     }
 };
 
