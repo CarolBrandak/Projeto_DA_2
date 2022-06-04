@@ -28,6 +28,7 @@ void Plataform::initialMenu(){
     cout << "2. Cenario 1" << endl;
     cout << "3. Case 2.3" << endl;
     cout << "4. Case 2.1"<<endl;
+    cout << "5. Case 2.2"<<endl;
     cout << "0. Exit" << endl;
     std::cin>>op;
     while (stateApplication){
@@ -49,6 +50,9 @@ void Plataform::initialMenu(){
                 case_2_1();
                 initialMenu();
                 break;
+            case 5:
+                case_2_2();
+                initialMenu();
             default:
                 cout<<"Invalid option, enter again!\n\n";
                 initialMenu();
@@ -183,6 +187,7 @@ void Plataform::Case_2_3() {
     pair<vector<int>,vector<vector<int>>> res = graph.fordFulkerson(o,d);
     cout<<"Encaminhamento:"<<endl;
     vector<vector<int>> paths = res.second;
+
     int max_flow =0;
     for (int j =0 ; j <paths.size(); j++){
         for(auto i : paths[j]){
@@ -192,8 +197,6 @@ void Plataform::Case_2_3() {
         cout<<"Nº de pessoas:"<<res.first[j]<<endl;
     }
     cout<<"Maximo flow:"<<max_flow<<endl;
-
-    //cout<<"Path Flow:"<<path_flow<<endl;
 }
 
 void Plataform::MaxDimMinTrans() {
@@ -269,18 +272,92 @@ void Plataform::case_2_1() {
         cout<<"Impossivel transportar esse nº de pessoas!"<<endl;
         initialMenu();
     }
+    else if (cap == max_flow){
+        printPath(aux.first,aux.second);
+        initialMenu();
+    }
+    else{
+        FulkersonGraph graph = FulkersonGraph(file);
+        pair<vector<int>,vector<vector<int>>> res = graph.fordFulkerson2_1(o,d,cap);
+        printPath(res.first,res.second);
+    }
 
-    FulkersonGraph graph = FulkersonGraph(file);
+}
+
+void Plataform::case_2_2() {
+    string file;
+
+    int d,o,cap;
+    if(this->fich==10)
+        file =("../Tests/in"+ std::to_string(this->fich) +".txt");
+    else
+        file = ("../Tests/in0"+ std::to_string(this->fich) +".txt");
+
+    cout << "Origem:" << endl;
+    std::cin >> o;
+    while (!graph->findVertex(o)){
+        cout << "Essa origem não existe.\n";
+        cout << "Origem:" << endl;
+        std::cin >> o;
+    }
+
+    cout << "Destino:" << endl;
+    std::cin >> d;
+    while (!graph->findVertex(d)){
+        cout << "Esse destino não existe.\n";
+        cout << "Destino:" << endl;
+        std::cin >> d;
+    }
+    cout << "Capacity:" << endl;
+    std::cin >> cap;
+
+    FulkersonGraph rgraph = FulkersonGraph(file);
+    pair<vector<int>,vector<vector<int>>> aux =rgraph.fordFulkerson(o,d);
+    int max_flow = 0;
+    for(auto e: aux.first){
+        max_flow+=e;
+    }
+    if(cap > max_flow){
+        cout<<"Impossivel transportar esse nº de pessoas!"<<endl;
+        initialMenu();
+    }
+    else if (cap == max_flow){
+        printPath(aux.first,aux.second);
+        initialMenu();
+    }
+
+    else {
+        FulkersonGraph graph = FulkersonGraph(file);
+        pair<vector<int>, vector<vector<int>>> res = graph.fordFulkerson2_1(o, d, cap);
+        printPath(res.first, res.second);
+
+        max_flow -= cap;
+        int option, newpassengers;
+        cout << "Deseja adicionar passageiros?(1->sim / 0->não)" << endl;
+        cin >> option;
+        if (option == 0) {
+            initialMenu();
+        }
+        cout << "Quantos?" << endl;
+        cin >> newpassengers;
+
+        if (newpassengers > max_flow){
+            cout << "Impossivel transportar esse nº de pessoas!" << endl;
+            initialMenu();
+        }
+        res = graph.fordFulkerson2_1(o,d,newpassengers);
+        printPath(res.first,res.second);
+    }
+}
+
+void Plataform::printPath(vector<int> flow, vector<vector<int>> paths) {
     cout<<"Encaminhamento:"<<endl;
-    pair<vector<int>,vector<vector<int>>> res = graph.fordFulkerson2_1(o,d,cap);
-    vector<vector<int>> paths = res.second;
     for (int j =0 ; j <paths.size(); j++){
         for(auto i : paths[j]){
             cout<<i<<"->";
         }
-        cout<<"Nº de pessoas:"<<res.first[j]<<endl;
+        cout<<"Nº de pessoas:"<<flow[j]<<endl;
     }
-
 }
 
 

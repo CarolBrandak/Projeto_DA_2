@@ -6,6 +6,7 @@
 #define PROJETO_DA_2_PLATAFORM_H
 
 #include "Graph.h"
+#include "fulkersongraph.h"
 
 #include <iostream>
 using std::cout;
@@ -33,9 +34,11 @@ class Plataform{
         void ReadDataset(const string& fileName);
         void ReadGraph();
         void MaxGroupDimension();
-        void Case_2_3();
         void case_2_1();
+        void case_2_2();
+        void Case_2_3();
         void MaxDimMinTrans();
+        void printPath(vector<int> flow, vector<vector <int>> paths);
     };
 
 #endif //PROJETO_DA_2_PLATAFORM_H
