@@ -11,11 +11,10 @@ Plataform::Plataform() {
 
 void Plataform::FileMenu(){
     cout << "Qual ficheiro quer ler: (1-10)"<< endl;
-    int fich;
     std::cin >> fich;
     while (fich < 0 || fich > 10){
         cout << "Erro! Qual ficheiro quer ler: (1-10)"<< endl;
-        std::cin >> fich;
+        std::cin >> this->fich;
     }
     if(fich==10) ReadDataset("../Tests/in"+ std::to_string(fich) +".txt");
     else ReadDataset("../Tests/in0"+ std::to_string(fich) +".txt");
@@ -237,10 +236,10 @@ void Plataform::case_2_1() {
     string file;
 
     int d,o,cap;
-    if(fich==10)
-        file =("../Tests/in"+ std::to_string(fich) +".txt");
+    if(this->fich==10)
+        file =("../Tests/in"+ std::to_string(this->fich) +".txt");
     else
-        file = ("../Tests/in0"+ std::to_string(fich) +".txt");
+        file = ("../Tests/in0"+ std::to_string(this->fich) +".txt");
 
     cout << "Origem:" << endl;
     std::cin >> o;

@@ -234,7 +234,7 @@ public:
                 }
                 capacity -= path_flow;
                 if(capacity < 0 ){
-                    path_flows.push_back(1);
+                    path_flows.push_back(capacity+=path_flow);
                 }
                 path_flows.push_back(path_flow);
                 paths.push_back(res.second);
