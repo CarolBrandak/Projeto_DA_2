@@ -259,11 +259,18 @@ void Plataform::case_2_1() {
     cout << "Capacity:" << endl;
     std::cin >> cap;
 
-    FulkersonGraph graph = FulkersonGraph(file);
+    FulkersonGraph rgraph = FulkersonGraph(file);
+    pair<vector<int>,vector<vector<int>>> aux =rgraph.fordFulkerson(o,d);
+    int max_flow = 0;
+    for(auto e: aux.first){
+        max_flow+=e;
+    }
+    if(cap > max_flow){
+        cout<<"Impossivel transportar esse nº de pessoas!"<<endl;
+        initialMenu();
+    }
 
-    /*if(cap > graph.fordFulkerson(o,d).first){
-        cerr<<"Impossivel transportar esse nº de pessoas!"<<endl;
-    }*/
+    FulkersonGraph graph = FulkersonGraph(file);
     cout<<"Encaminhamento:"<<endl;
     pair<vector<int>,vector<vector<int>>> res = graph.fordFulkerson2_1(o,d,cap);
     vector<vector<int>> paths = res.second;
