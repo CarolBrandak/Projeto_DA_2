@@ -6,7 +6,6 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.20.2"
@@ -39,7 +38,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "Projeto_DA_2::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Projeto_DA_2-Debug-e5e0b3c73063d7b5b18d.json",
+					"jsonFile" : "target-Projeto_DA_2-Debug-5ba499662f8b5e04ba49.json",
 					"name" : "Projeto_DA_2",
 					"projectIndex" : 0
 				}
@@ -49,12 +48,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/luispaiva/CLionProjects/new_projeto_DA/cmake-build-debug",
-		"source" : "/Users/luispaiva/CLionProjects/new_projeto_DA"
+		"build" : "C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2/cmake-build-debug",
+		"source" : "C:/Users/anaca/OneDrive/Ambiente de Trabalho/Projeto_DA_2"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 3
+		"minor" : 2
 	}
 }

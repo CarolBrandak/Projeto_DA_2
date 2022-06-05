@@ -30,7 +30,6 @@ class Plataform{
         Plataform();
         void FileMenu();
         void initialMenu();
-        void MenuRota();
         void ReadDataset(const string& fileName);
         void ReadGraph();
         void MaxGroupDimension();

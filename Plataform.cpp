@@ -25,13 +25,15 @@ void Plataform::initialMenu(){
     cout<< "----------------------------------------------------" <<endl;
     cout << "Choose an option:" << endl;
     cout << "1. Lista de viagens" << endl;
-    cout << "2. Cenario 1" << endl;
-    cout << "3. Case 2.3" << endl;
-    cout << "4. Case 2.1"<<endl;
-    cout << "5. Case 2.2"<<endl;
-    cout << "0. Exit" << endl;
+    cout << "2. Case 1.1" << endl;
+    cout << "3. Case 1.2" << endl;
+    cout << "4. Case 2.3" << endl;
+    cout << "5. Case 2.1"<<endl;
+    cout << "6. Case 2.2"<<endl;
+    cout << "7. Exit" << endl;
     std::cin>>op;
     while (stateApplication){
+
         switch (op) {
             case 0:
                 stateApplication=false;
@@ -40,17 +42,20 @@ void Plataform::initialMenu(){
                 ReadGraph();
                 break;
             case 2 :
-                MenuRota();
+                MaxGroupDimension();
                 break;
             case 3:
+                MaxDimMinTrans();
+                break;
+            case 4:
                 Case_2_3();
                 initialMenu();
                 break;
-            case 4:
+            case 5:
                 case_2_1();
                 initialMenu();
                 break;
-            case 5:
+            case 6:
                 case_2_2();
                 initialMenu();
             default:
@@ -58,29 +63,6 @@ void Plataform::initialMenu(){
                 initialMenu();
                 break;
         }
-    }
-}
-
-void Plataform::MenuRota() {
-    int op;
-    cout << "1. Case 1.1" << endl;
-    cout << "2. Case 1.2"<<endl;
-    cout << "3. Voltar ao menu anterior" << endl;
-    std::cin >> op;
-    switch (op) {
-        case 1:
-            MaxGroupDimension();
-            break;
-        case 2:
-            MaxDimMinTrans();
-            break;
-        case 3:
-            initialMenu();
-            break;
-        default:
-            cout << "Invalid option, enter again!\n\n";
-            MenuRota();
-            break;
     }
 }
 
@@ -154,7 +136,7 @@ void Plataform::MaxGroupDimension() {
         }
         cout << endl;
     }
-    MenuRota();
+    initialMenu();
 }
 
 void Plataform::Case_2_3() {
@@ -231,8 +213,7 @@ void Plataform::MaxDimMinTrans() {
         }
         cout << endl;
     }
-
-    MenuRota();
+    initialMenu();
 }
 
 void Plataform::case_2_1() {

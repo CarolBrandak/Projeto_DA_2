@@ -97,7 +97,7 @@ public:
             for (auto e : nodes[u].adj){
                 int w = e->dest ;
 
-                if(nodes[w].visited== false && e->capacity >0){
+                if(!nodes[w].visited && e->capacity > 0){
                     distToV[w] = distToV[u] + 1;
                     nodes[w].parent = u;
                     nodes[w].grau +=1;
