@@ -182,7 +182,7 @@ void Plataform::Case_2_3() {
 }
 
 void Plataform::MaxDimMinTrans() {
-    int o, d, dim;
+    int o, d;
     cout << "Origin:" << endl;
     std::cin >> o;
     while (!graph->findVertex(o)){
@@ -198,18 +198,34 @@ void Plataform::MaxDimMinTrans() {
         std::cin >> d;
     }
 
-    graph->dijkstraCapTrans(o);
+    graph->dijkstraMaxCapacity(o);
 
     vector<int> vec = graph->getPath(o, d);
     if(vec.size() == 0){
         cout << "Caminho Inexistente\n";
     }else {
-        cout << "Rota:" << endl;
+        cout << "Rota com maior capacidade:" << endl;
         for (int v = 0; v < vec.size(); v++) {
             if (v != vec.size() - 1)
                 cout << vec[v] << " --> ";
             else
                 cout << vec[v];
+        }
+        cout << endl;
+    }
+
+    graph->dijkstraShortestPath(o);
+
+    vector<int> vec2 = graph->getPath(o, d);
+    if(vec.size() == 0){
+        cout << "Caminho Inexistente\n";
+    }else {
+        cout << "Rota com menos transbordos:" << endl;
+        for (int v = 0; v < vec2.size(); v++) {
+            if (v != vec2.size() - 1)
+                cout << vec2[v] << " --> ";
+            else
+                cout << vec2[v];
         }
         cout << endl;
     }

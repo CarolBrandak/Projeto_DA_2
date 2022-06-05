@@ -123,7 +123,7 @@ public:
     std::vector<Vertex<T> *> getVertexSet() const;
 
     // Fp06 - single source
-    void dijkstraShortestPath(int s, int dim);
+    void dijkstraShortestPath(int origin);
     void dijkstraMaxCapacity(int origin);
     void dijkstraCapTrans(int origin);
     std::vector<T> getPath(int origin, int dest) const;
@@ -204,25 +204,23 @@ template<class T>
 bool myfunction (Vertex<T>* i,Vertex<T>* j) { return (i->getDist() < j->getDist()); }
 
 template<class T>
-void Graph<T>::dijkstraShortestPath(int origin, int dim) {
+void Graph<T>::dijkstraShortestPath(int origin) {
     auto v = findVertex(origin);
     std::vector<Vertex<T> *> vertexSetCopy = vertexSet;
     for (auto vertex: vertexSetCopy){
         vertex->dist = INF;
         vertex->visited = false;
         vertex->path = NULL;
-        vertex->lastEdge = 0;
     }
     v->dist = 0;
     std::sort(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * v1, Vertex<T> * v2){return v1->dist < v2->dist;});
     for(int i = 0; i < vertexSet.size(); ++i) {
         Vertex<T> * nextV = vertexSetCopy.front();
         for (auto edge : nextV->adj){
-            if (!edge.dest->visited && edge.capacity >= dim) {
-                if(nextV->dist + edge.duration < edge.dest->dist || edge.dest->dist == 0) {
-                    edge.dest->dist = nextV->dist + edge.duration;
+            if (!edge.dest->visited) {
+                if(nextV->dist + 1 < edge.dest->dist || edge.dest->dist == 0) {
+                    edge.dest->dist = nextV->dist + 1;
                     edge.dest->path = nextV;
-                    edge.dest->lastEdge = edge.id;
                 }
             }
         }
