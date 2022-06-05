@@ -30,7 +30,7 @@ void Plataform::initialMenu(){
     cout << "4. Case 2.3" << endl;
     cout << "5. Case 2.1"<<endl;
     cout << "6. Case 2.2"<<endl;
-    cout << "7. Exit" << endl;
+    cout << "0. Exit" << endl;
     std::cin>>op;
     while (stateApplication){
 

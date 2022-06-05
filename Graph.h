@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <map>
 
+#include "MaxHeap.h"
 
 template <class T> class Edge;
 template <class T> class Graph;
@@ -92,7 +93,7 @@ class Edge {
     int id;
     Vertex<T> * dest;      // destination vertex
     int duration;       // edge duration
-    int capacity;
+    double capacity;
 public:
     Edge(int id, Vertex<T> *d, int ca, int du);
     friend class Graph<T>;
@@ -231,7 +232,7 @@ void Graph<T>::dijkstraShortestPath(int origin, int dim) {
     }
 }
 
-//A cada aresta adjacente escolhe a que tem maior capacidade
+//A testar como nó 2 a 5 e ver que o programa escolhe o cominho 2-5 em vez de 2-4-5 porque tem maior fluxo
 template<class T>
 void Graph<T>::dijkstraMaxCapacity(int origin) {
     auto v = findVertex(origin);
@@ -240,18 +241,18 @@ void Graph<T>::dijkstraMaxCapacity(int origin) {
         vertex->dist = 0;
         vertex->visited = false;
         vertex->path = NULL;
-        vertex->lastEdge = 0;
     }
-    v->dist = 1;
+    v->dist = INF;
+
     std::sort(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * v1, Vertex<T> * v2){return v1->dist > v2->dist;});
     for(int i = 0; i < vertexSet.size(); ++i) {
         Vertex<T> * nextV = vertexSetCopy.front();
         for (auto edge : nextV->adj){
+            double w=std::min(nextV->dist, edge.capacity);
             if (!edge.dest->visited) {
-                if(nextV->dist + edge.capacity > edge.dest->dist || edge.dest->dist == INF) {
-                    edge.dest->dist = nextV->dist + edge.capacity;
+                if(w>edge.dest->dist) {
+                    edge.dest->dist = w;
                     edge.dest->path = nextV;
-                    edge.dest->lastEdge = edge.id;
                 }
             }
         }
@@ -260,6 +261,7 @@ void Graph<T>::dijkstraMaxCapacity(int origin) {
         std::sort(vertexSetCopy.begin(), vertexSetCopy.end(), [](Vertex<T> * vertex1, Vertex<T> * vertex2){return vertex1->dist > vertex2->dist;});
     }
 }
+
 
 //A cada aresta adjacente escolhe a que tem maior capacidade juntamente com o menor numero de transbordos ate esse instante
 template<class T>
