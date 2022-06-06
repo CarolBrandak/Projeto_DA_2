@@ -38,7 +38,7 @@ class Plataform{
         void case_2_2();
         void Case_2_3();
         void MaxDimMinTrans();
-        void printPath(vector<int> flow, vector<vector <int>> paths);
+        void printPath(vector<FulkersonGraph::Path>);
     };
 
 #endif //PROJETO_DA_2_PLATAFORM_H
