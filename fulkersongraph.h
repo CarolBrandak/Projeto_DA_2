@@ -24,8 +24,8 @@ class FulkersonGraph {
         vector<Edge*> adj;
         vector<Edge*> residual;
     };
-    int size;              // Graph size (vertices are numbered from 1 to n)
-    std::vector<Node> nodes; // The list of nodes being represented
+    int size;
+    std::vector<Node> nodes;
 public:
 
     struct Path {
@@ -73,10 +73,6 @@ public:
 
         nodes[src].adj.push_back(new Edge{dest, capacity, true, duration});
         nodes[dest].residual.push_back(new Edge{src, 0, true, duration });
-    }
-
-    int getSize() const{
-        return size;
     }
 
     pair <int,vector<int>> bfs(int v, int dest) {
@@ -187,7 +183,7 @@ public:
     vector<Path> fordFulkerson2_1(int s, int t, int capacity) {
         pair<int,vector<int>> res;
         vector<Path> paths;
-        int max_flow=0, status=0;
+        int status=0;
 
         while(capacity > 0 && status !=-1){
             Path path;

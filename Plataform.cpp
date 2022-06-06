@@ -353,7 +353,7 @@ void Plataform::Case_2_3() {
 }
 
 void Plataform::Case_2_4() {
-    int o,d,cap,duration = 0;
+    int o,d,cap;
 
     printCaseMenu(o,d,cap);
 
@@ -362,10 +362,7 @@ void Plataform::Case_2_4() {
     graph.pathduration(paths);
     sort(paths.begin(), paths.end(), desDuration);
 
-    /*for(int i =0; i<paths.size();i++){
-        cout<<paths[i].duration<<endl;
-    }*/
-    cout<<"Duration:"<<paths[0].duration<<endl;
+    cout<<"Wait duration:"<<paths[paths.size()-1].duration-paths.begin()->duration<<endl;
     Menu2();
 }
 
