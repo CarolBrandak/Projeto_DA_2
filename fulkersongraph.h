@@ -5,9 +5,7 @@
 #include <list>
 #include <stack>
 #include <fstream>
-#include "MaxHeap.h"
 #include <queue>
-#include "MinHeap.h"
 
 using namespace std;
 class FulkersonGraph {
@@ -16,6 +14,7 @@ class FulkersonGraph {
         int dest;
         int capacity;
         bool active;
+        int duration;
     };
     struct Node {
         int dist;
@@ -28,9 +27,10 @@ class FulkersonGraph {
     int size;              // Graph size (vertices are numbered from 1 to n)
     std::vector<Node> nodes; // The list of nodes being represented
 public:
-    struct Path{
+
+    struct Path {
         vector<int> path;
-        int duration =0;
+        int duration = 0;
         int flow = 0;
     };
 
@@ -55,7 +55,7 @@ public:
         int src, dest, cap, dur;
         while (infile >> src) {
             infile >> dest >> cap >> dur;
-            add_edge(src, dest, cap);
+            add_edge(src, dest, cap, dur);
         }
     }
 
@@ -67,12 +67,12 @@ public:
         nodes.push_back(node);
     }
 
-    void add_edge(int src, int dest, int capacity = 1) {
+    void add_edge(int src, int dest, int capacity = 1, int duration = 0) {
         if (src < 1 || src > size || dest < 1 || dest > size)
             return;
 
-        nodes[src].adj.push_back(new Edge{dest, capacity, true});
-        nodes[dest].residual.push_back(new Edge{src, 0, true});
+        nodes[src].adj.push_back(new Edge{dest, capacity, true, duration});
+        nodes[dest].residual.push_back(new Edge{src, 0, true, duration });
     }
 
     int getSize() const{
@@ -245,12 +245,27 @@ public:
 
                     }
                 }
-
                 paths.push_back(path);
             }
         }
         return paths;
     }
+
+    void pathduration(vector<Path> &paths){
+        for(int i = 0; i<paths.size();i++){
+            for(int j = 0; j<paths[i].path.size()-1;j++){
+
+                for(auto k: nodes[paths[i].path[j]].adj){
+                    if( k->dest == paths[i].path[j+1]){
+                        paths[i].duration += k->duration;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
 };
 
 

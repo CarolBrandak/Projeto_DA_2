@@ -23,9 +23,9 @@ using std::ifstream;
 
 class Plataform{
     Graph<int>* graph;
-    Graph<int>* rgraph;
     bool stateApplication=true;
     int fich;
+    string file;
     public:
         Plataform();
         void FileMenu();
@@ -37,8 +37,11 @@ class Plataform{
         void case_2_1();
         void case_2_2();
         void Case_2_3();
+        void Case_2_4();
         void MaxDimMinTrans();
         void printPath(vector<FulkersonGraph::Path>);
-    };
+        void printCaseMenu(int &o,int &d, int &c);
+        static bool desDuration( FulkersonGraph::Path p1, FulkersonGraph::Path p2);
+};
 
 #endif //PROJETO_DA_2_PLATAFORM_H

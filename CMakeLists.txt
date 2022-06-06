@@ -3,4 +3,4 @@ project(Projeto_DA_2)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Projeto_DA_2 main.cpp Graph.h Plataform.h Plataform.cpp fulkersongraph.h MaxHeap.h MinHeap.h)
+add_executable(Projeto_DA_2 main.cpp Graph.h Plataform.h Plataform.cpp fulkersongraph.h)

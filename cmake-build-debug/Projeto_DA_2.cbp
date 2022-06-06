@@ -83,12 +83,6 @@
 		<Unit filename="/Users/luispaiva/CLionProjects/new_projeto_DA/Graph.h">
 			<Option target="Projeto_DA_2"/>
 		</Unit>
-		<Unit filename="/Users/luispaiva/CLionProjects/new_projeto_DA/MaxHeap.h">
-			<Option target="Projeto_DA_2"/>
-		</Unit>
-		<Unit filename="/Users/luispaiva/CLionProjects/new_projeto_DA/MinHeap.h">
-			<Option target="Projeto_DA_2"/>
-		</Unit>
 		<Unit filename="/Users/luispaiva/CLionProjects/new_projeto_DA/Plataform.cpp">
 			<Option target="Projeto_DA_2"/>
 		</Unit>

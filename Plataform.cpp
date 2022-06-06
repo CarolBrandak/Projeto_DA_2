@@ -16,8 +16,14 @@ void Plataform::FileMenu(){
         cout << "Erro! Qual ficheiro quer ler: (1-10)"<< endl;
         std::cin >> this->fich;
     }
-    if(fich==10) ReadDataset("../Tests/in"+ std::to_string(fich) +".txt");
-    else ReadDataset("../Tests/in0"+ std::to_string(fich) +".txt");
+    if(fich==10) {
+        file ="../Tests/in"+ std::to_string(fich) +".txt";
+        ReadDataset(file);
+    }
+    else {
+        this->file="../Tests/in0"+ std::to_string(fich) +".txt";
+        ReadDataset(file);
+    }
     initialMenu();
 }
 void Plataform::initialMenu(){
@@ -29,6 +35,7 @@ void Plataform::initialMenu(){
     cout << "3. Case 2.3" << endl;
     cout << "4. Case 2.1"<<endl;
     cout << "5. Case 2.2"<<endl;
+    cout << "6. Case 2.4"<<endl;
     cout << "0. Exit" << endl;
     std::cin>>op;
     while (stateApplication){
@@ -53,6 +60,11 @@ void Plataform::initialMenu(){
             case 5:
                 case_2_2();
                 initialMenu();
+                break;
+            case 6:
+                Case_2_4();
+                initialMenu();
+                break;
             default:
                 cout<<"Invalid option, enter again!\n\n";
                 initialMenu();
@@ -158,13 +170,7 @@ void Plataform::MaxGroupDimension() {
 }
 
 void Plataform::Case_2_3() {
-    string file;
     int o,d;
-
-    if(fich==10)
-        file =("../Tests/in"+ std::to_string(fich) +".txt");
-    else
-        file = ("../Tests/in0"+ std::to_string(fich) +".txt");
 
     cout << "Origem:" << endl;
     std::cin >> o;
@@ -183,7 +189,7 @@ void Plataform::Case_2_3() {
     }
     cout << endl;
 
-    FulkersonGraph graph = FulkersonGraph(file);
+    FulkersonGraph graph = FulkersonGraph(this->file);
     vector <FulkersonGraph::Path> paths = graph.fordFulkerson(o,d);
     cout<<"Encaminhamento:"<<endl;
 
@@ -235,33 +241,11 @@ void Plataform::MaxDimMinTrans() {
 }
 
 void Plataform::case_2_1() {
-    string file;
-
     int d,o,cap;
-    if(this->fich==10)
-        file =("../Tests/in"+ std::to_string(this->fich) +".txt");
-    else
-        file = ("../Tests/in0"+ std::to_string(this->fich) +".txt");
 
-    cout << "Origem:" << endl;
-    std::cin >> o;
-    while (!graph->findVertex(o)){
-        cout << "Essa origem não existe.\n";
-        cout << "Origem:" << endl;
-        std::cin >> o;
-    }
+    printCaseMenu(o,d,cap);
 
-    cout << "Destino:" << endl;
-    std::cin >> d;
-    while (!graph->findVertex(d)){
-        cout << "Esse destino não existe.\n";
-        cout << "Destino:" << endl;
-        std::cin >> d;
-    }
-    cout << "Capacity:" << endl;
-    std::cin >> cap;
-
-    FulkersonGraph rgraph = FulkersonGraph(file);
+    FulkersonGraph rgraph = FulkersonGraph(this->file);
     vector<FulkersonGraph::Path> aux =rgraph.fordFulkerson(o,d);
     int max_flow = 0;
     for(auto e: aux){
@@ -276,7 +260,7 @@ void Plataform::case_2_1() {
         initialMenu();
     }
     else{
-        FulkersonGraph graph = FulkersonGraph(file);
+        FulkersonGraph graph = FulkersonGraph(this->file);
         vector<FulkersonGraph::Path> res = graph.fordFulkerson2_1(o,d,cap);
         printPath(res);
     }
@@ -284,33 +268,11 @@ void Plataform::case_2_1() {
 }
 
 void Plataform::case_2_2() {
-    string file;
+    int o,d,cap;
 
-    int d,o,cap;
-    if(this->fich==10)
-        file =("../Tests/in"+ std::to_string(this->fich) +".txt");
-    else
-        file = ("../Tests/in0"+ std::to_string(this->fich) +".txt");
+    printCaseMenu(o,d,cap);
 
-    cout << "Origem:" << endl;
-    std::cin >> o;
-    while (!graph->findVertex(o)){
-        cout << "Essa origem não existe.\n";
-        cout << "Origem:" << endl;
-        std::cin >> o;
-    }
-
-    cout << "Destino:" << endl;
-    std::cin >> d;
-    while (!graph->findVertex(d)){
-        cout << "Esse destino não existe.\n";
-        cout << "Destino:" << endl;
-        std::cin >> d;
-    }
-    cout << "Capacity:" << endl;
-    std::cin >> cap;
-
-    FulkersonGraph rgraph = FulkersonGraph(file);
+    FulkersonGraph rgraph = FulkersonGraph(this->file);
     vector<FulkersonGraph::Path> aux =rgraph.fordFulkerson(o,d);
     int max_flow = 0;
     for(auto e: aux){
@@ -326,7 +288,7 @@ void Plataform::case_2_2() {
     }
 
     else {
-        FulkersonGraph graph = FulkersonGraph(file);
+        FulkersonGraph graph = FulkersonGraph(this->file);
         vector<FulkersonGraph::Path> res = graph.fordFulkerson2_1(o, d, cap);
         printPath(res);
 
@@ -347,10 +309,24 @@ void Plataform::case_2_2() {
         res = graph.fordFulkerson2_1(o,d,newpassengers);
         printPath(res);
     }
-
-
 }
 
+void Plataform::Case_2_4() {
+    int o,d,cap,duration = 0;
+
+    printCaseMenu(o,d,cap);
+
+    FulkersonGraph graph = FulkersonGraph(this->file);
+    vector<FulkersonGraph::Path> paths =graph.fordFulkerson2_1(o,d,cap);
+    graph.pathduration(paths);
+    sort(paths.begin(), paths.end(), desDuration);
+
+    /*for(int i =0; i<paths.size();i++){
+        cout<<paths[i].duration<<endl;
+    }*/
+    cout<<"Duration:"<<paths[0].duration<<endl;
+
+}
 void Plataform::printPath(vector<FulkersonGraph::Path> paths) {
     cout<<"Encaminhamento:"<<endl;
     for (auto i: paths){
@@ -361,4 +337,28 @@ void Plataform::printPath(vector<FulkersonGraph::Path> paths) {
     }
 }
 
+void Plataform::printCaseMenu(int &o, int &d, int &c) {
 
+    cout << "Origem:" << endl;
+    std::cin >> o;
+    while (!graph->findVertex(o)){
+        cout << "Essa origem não existe.\n";
+        cout << "Origem:" << endl;
+        std::cin >> o;
+    }
+
+    cout << "Destino:" << endl;
+    std::cin >> d;
+    while (!graph->findVertex(d)){
+        cout << "Esse destino não existe.\n";
+        cout << "Destino:" << endl;
+        std::cin >> d;
+    }
+    cout << "Capacity:" << endl;
+    std::cin >> c;
+}
+
+
+bool Plataform::desDuration(FulkersonGraph::Path p1, FulkersonGraph::Path p2) {
+    return (p1.duration < p2.duration);
+}
