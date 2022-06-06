@@ -5,21 +5,19 @@
 #include <list>
 #include <stack>
 #include <fstream>
-#include "MaxHeap.h"
 #include <queue>
-#include "MinHeap.h"
 
 using namespace std;
 class FulkersonGraph {
+
     struct Edge {
-        int dest;   // Destination node
-        int flow;
-        int capacity; // An integer weight
+        int dest;
+        int capacity;
         bool active;
+        int duration;
     };
     struct Node {
         int dist;
-        int cap;
         int grau;
         int parent;
         bool visited;
@@ -29,6 +27,12 @@ class FulkersonGraph {
     int size;              // Graph size (vertices are numbered from 1 to n)
     std::vector<Node> nodes; // The list of nodes being represented
 public:
+
+    struct Path {
+        vector<int> path;
+        int duration = 0;
+        int flow = 0;
+    };
 
     explicit FulkersonGraph(int size) : size(size) {
         for (int i = 0; i <= size; i++) {
@@ -51,7 +55,7 @@ public:
         int src, dest, cap, dur;
         while (infile >> src) {
             infile >> dest >> cap >> dur;
-            add_edge(src, dest, cap);
+            add_edge(src, dest, cap, dur);
         }
     }
 
@@ -63,12 +67,12 @@ public:
         nodes.push_back(node);
     }
 
-    void add_edge(int src, int dest, int capacity = 1) {
+    void add_edge(int src, int dest, int capacity = 1, int duration = 0) {
         if (src < 1 || src > size || dest < 1 || dest > size)
             return;
 
-        nodes[src].adj.push_back(new Edge{dest, 0, capacity, true});
-        nodes[dest].residual.push_back(new Edge{src, 0, 0, true});
+        nodes[src].adj.push_back(new Edge{dest, capacity, true, duration});
+        nodes[dest].residual.push_back(new Edge{src, 0, true, duration });
     }
 
     int getSize() const{
@@ -97,7 +101,7 @@ public:
             for (auto e : nodes[u].adj){
                 int w = e->dest ;
 
-                if(!nodes[w].visited && e->capacity > 0){
+                if(nodes[w].visited== false && e->capacity >0){
                     distToV[w] = distToV[u] + 1;
                     nodes[w].parent = u;
                     nodes[w].grau +=1;
@@ -118,13 +122,13 @@ public:
         return{-1,{}};
     }
 
-    pair<vector<int>,vector<vector<int>>> fordFulkerson(int s, int t) {
+    vector<Path> fordFulkerson(int s, int t) {
         pair<int,vector<int>> res;
-        vector<vector<int>> paths;
-        vector<int> path_flows;
+        vector<Path> paths;
         int max_flow=0, status=0;
 
         while(status != -1){
+            Path path;
             res= bfs (s,t);
             if((status = res.first) == -1){
                 break;
@@ -172,21 +176,23 @@ public:
                     }
                 }
                 max_flow += path_flow;
-                path_flows.push_back(path_flow);
-                paths.push_back(res.second);
+                path.path=res.second;
+                path.flow=path_flow;
+                paths.push_back(path);
             }
         }
-       return {path_flows,paths};
+        return paths;
     }
 
-    pair<vector<int>,vector<vector<int>>> fordFulkerson2_1(int s, int t, int capacity) {
+    vector<Path> fordFulkerson2_1(int s, int t, int capacity) {
         pair<int,vector<int>> res;
-        vector<vector<int>> paths;
-        vector<int> path_flows;
+        vector<Path> paths;
         int max_flow=0, status=0;
 
         while(capacity > 0 && status !=-1){
-            res= bfs (s,t);
+            Path path;
+            res = bfs (s,t);
+            path.path=res.second;
             if((status = res.first) == -1){
                 break;
             }
@@ -204,7 +210,13 @@ public:
                     if(srcdest_flow < path_flow)
                         path_flow = srcdest_flow;
                 }
+                capacity -= path_flow;
+                if(capacity < 0 ){
+                    path.flow=capacity + path_flow;
+                }
+                else path.flow =path_flow;
                 for(int i = 0; i<res.second.size()-1;i++){
+
                     int src = res.second[i];
                     int dest = res.second[i+1];
 
@@ -214,7 +226,7 @@ public:
                         if(nodes[src].adj[i]->dest == dest) {
                             numrep++;
                             if (nodes[src].adj[i]->capacity >= path_flow) {
-                                nodes[src].adj[i]->capacity -= path_flow;
+                                nodes[src].adj[i]->capacity -= path.flow;
                             } else {
                                 continue;
                             }
@@ -223,25 +235,37 @@ public:
                                 if (nodes[dest].residual[j]->dest == src) {
                                     numreturn++;
                                     if (numrep == numreturn) {
-                                        nodes[dest].residual[j]->capacity += path_flow;
+                                        nodes[dest].residual[j]->capacity += path.flow;
                                         break;
                                     }
                                 }
                             }
                             break;
                         }
+
                     }
                 }
-                capacity -= path_flow;
-                if(capacity < 0 ){
-                    path_flows.push_back(capacity+=path_flow);
-                }
-                path_flows.push_back(path_flow);
-                paths.push_back(res.second);
+                paths.push_back(path);
             }
         }
-        return {path_flows,paths};
+        return paths;
     }
+
+    void pathduration(vector<Path> &paths){
+        for(int i = 0; i<paths.size();i++){
+            for(int j = 0; j<paths[i].path.size()-1;j++){
+
+                for(auto k: nodes[paths[i].path[j]].adj){
+                    if( k->dest == paths[i].path[j+1]){
+                        paths[i].duration += k->duration;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+
 };
 
 

@@ -4,14 +4,12 @@
 CMakeFiles/Projeto_DA_2.dir/Plataform.cpp.obj: \
  ../Graph.h \
  ../MaxHeap.h \
- ../MinHeap.h \
  ../Plataform.cpp \
  ../Plataform.h \
  ../fulkersongraph.h
 CMakeFiles/Projeto_DA_2.dir/main.cpp.obj: \
  ../Graph.h \
  ../MaxHeap.h \
- ../MinHeap.h \
  ../Plataform.h \
  ../fulkersongraph.h \
  ../main.cpp
